@@ -1,0 +1,30 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MusicIsland" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="isMaterial3DynamicColorApplied">false</item>
+
+    </style>
+
+
+    <style name="Theme.MusicIsland" parent="Base.Theme.MusicIsland" />
+
+    <style name="Theme.PlayQueue.Popup" parent="Theme.MaterialComponents.Light.Dialog">
+        <!-- 背景透明，才能看到阴影 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+
+        <!-- 去掉标题 -->
+        <item name="android:windowNoTitle">true</item>
+
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:backgroundDimAmount">0.0</item>
+
+        <!-- 允许外部点击关闭 -->
+        <item name="android:windowCloseOnTouchOutside">true</item>
+
+        <!-- 弹窗动画（系统自带） -->
+        <item name="android:windowAnimationStyle">@style/PopupAnimation</item>
+    </style>
+
+</resources>

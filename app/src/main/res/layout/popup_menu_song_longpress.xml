@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:id="@+id/action_like_song"
+        android:layout_width="180dp"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:foreground="@drawable/ripple_song_rounded">
+
+        <ImageView
+            android:id="@+id/like_icon_longPressed"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/solid_favorite_icon"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:id="@+id/like_text_longPressed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="喜爱"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#333333" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="#22000000"/>
+
+
+    <LinearLayout
+        android:id="@+id/action_delete_song"
+        android:layout_width="180dp"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:foreground="@drawable/ripple_song_rounded">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/delete_icon"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="删除"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#333333" />
+
+    </LinearLayout>
+
+</LinearLayout>

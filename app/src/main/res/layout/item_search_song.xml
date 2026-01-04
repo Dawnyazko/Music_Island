@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="@drawable/ripple_song_rounded"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp">
+
+    <ImageView
+        android:id="@+id/like_icon_search"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintEnd_toStartOf="@+id/song_name_search"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/song_name_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Song Name"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/like_icon_search"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/song_artist_search"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Song Artist"
+        android:textColor="#B3B3B3"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/song_tag_search"
+        app:layout_constraintTop_toBottomOf="@+id/song_name_search">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/song_tag_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:gravity="center_vertical"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="歌曲  -"
+        android:textColor="#B3B3B3"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/song_name_search">
+
+    </TextView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#22000000"
+        app:layout_constraintTop_toBottomOf="@+id/song_artist_search"
+        tools:layout_editor_absoluteX="8dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorControlHighlight">
+
+    <item>
+        <shape android:shape="rectangle">
+            <!-- 圆角长条效果（越大越像胶囊）-->
+            <corners android:radius="25dp" />
+
+            <!-- 背景色，可以换成主题色 -->
+            <solid android:color="#cad5ea" />
+        </shape>
+    </item>
+
+</ripple>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ShapeAppearanceOverlay.Material3.Button.Circle" parent="">
+        <!-- 关键：设为圆形 -->
+        <item name="cornerSize">50%</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <!-- 透明背景 -->
+    <style name="Theme.TransparentPlayer" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- 允许背景透过去 -->
+        <item name="android:windowIsTranslucent">true</item>
+
+        <!-- 背景必须透明否则黑屏 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+
+        <!-- 禁止系统默认Dim -->
+        <item name="android:backgroundDimEnabled">false</item>
+
+        <!-- 状态栏也透明 -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="PopupAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+</resources>
