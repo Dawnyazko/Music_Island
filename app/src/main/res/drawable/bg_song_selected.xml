@@ -5,7 +5,7 @@
     <!-- 圆角背景mask -->
     <item android:id="@android:id/mask">
         <shape android:shape="rectangle">
-            <corners android:radius="14dp" />   <!-- 控制圆角大小 -->
+            <corners android:radius="5dp" />
             <solid android:color="@android:color/white"/>
         </shape>
     </item>

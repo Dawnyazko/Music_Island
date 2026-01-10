@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.suchi.musicisland.R;
@@ -56,6 +57,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     public void onBindViewHolder(@NotNull SongViewHolder holder, int position) {
         Song song = songList.get(position);
         boolean isLast = position == getItemCount() - 1;
+        boolean isFirst = position == 0;
 
         holder.tvSongName.setText(song.getTitle());
         holder.tvArtist.setText(song.getSongArtist());
@@ -86,16 +88,16 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             return false;
         });
 
-        //为最后一首歌加长分割线
-        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) holder.divider.getLayoutParams();
-
-        if (isLast) {
-            lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        if (isFirst) {
+            holder.tvBgSong.setBackgroundResource(R.drawable.bg_pill_white_first);
+            holder.tvBgSong.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_song_selected_first));
+        } else if (isLast) {
+            holder.tvBgSong.setBackgroundResource(R.drawable.bg_pill_white_last);
+            holder.tvBgSong.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_song_selected_last));
         } else {
-            lp.width = dpToPx(context, 334);
+            holder.tvBgSong.setBackgroundResource(R.drawable.bg_pill_white);
+            holder.tvBgSong.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_song_selected));
         }
-
-        holder.divider.setLayoutParams(lp);
     }
 
     public static class SongViewHolder extends RecyclerView.ViewHolder {
@@ -104,7 +106,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         TextView tvSongDuration;
         ImageView tvIsLikeSong;
         TextView tvSongTrackNum;
-        View divider;
+        View tvBgSong;
 
         public SongViewHolder(@NotNull View itemView) {
             super(itemView);
@@ -113,7 +115,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             tvSongDuration = itemView.findViewById(R.id.song_duration);
             tvIsLikeSong = itemView.findViewById(R.id.like_icon_song);
             tvSongTrackNum = itemView.findViewById(R.id.song_trackNum);
-            divider = itemView.findViewById(R.id.divider);
+            tvBgSong = itemView.findViewById(R.id.bg_song);
         }
     }
 

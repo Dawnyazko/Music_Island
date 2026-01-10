@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="@drawable/ripple_song_rounded"
+    android:foreground="@drawable/bg_song_selected"
     android:clickable="true"
     android:focusable="true"
     android:paddingStart="8dp"
