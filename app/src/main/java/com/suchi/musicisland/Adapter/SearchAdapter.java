@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -65,6 +67,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     @Override
     public void onBindViewHolder(SearchViewHolder holder, int position) {
         Object obj = resultList.get(position);
+        boolean isLast = position == getItemCount() - 1;
+        boolean isFirst = position == 0;
 
         //清空，防止复用错乱
         holder.bindSong(null);
@@ -81,6 +85,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                     .transform(new RoundedCorners(14))
                     .into(holder.albumCover);
         }
+
         if (obj instanceof Song) {
             Song song = (Song)obj;
             //提取出歌曲
@@ -107,6 +112,40 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 return false;
             });
         }
+
+        if (getItemCount() == 1) {
+            if (obj instanceof Album) {
+                holder.albumBg.setBackgroundResource(R.drawable.bg_pill_white_single);
+                holder.albumBg.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_selected_single));
+            } else {
+                holder.songBg.setBackgroundResource(R.drawable.bg_pill_white_single);
+                holder.songBg.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_selected_single));
+            }
+        } else {
+            if (obj instanceof Album) {
+                if (isFirst) {
+                    holder.albumBg.setBackgroundResource(R.drawable.bg_pill_white_first);
+                    holder.albumBg.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_selected_first));
+                } else if (isLast) {
+                    holder.albumBg.setBackgroundResource(R.drawable.bg_pill_white_last);
+                    holder.albumBg.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_selected_last));
+                } else {
+                    holder.albumBg.setBackgroundResource(R.drawable.bg_pill_white);
+                    holder.albumBg.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_selected));
+                }
+            } else {
+                if (isFirst) {
+                    holder.songBg.setBackgroundResource(R.drawable.bg_pill_white_first);
+                    holder.songBg.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_selected_first));
+                } else if (isLast) {
+                    holder.songBg.setBackgroundResource(R.drawable.bg_pill_white_last);
+                    holder.songBg.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_selected_last));
+                } else {
+                    holder.songBg.setBackgroundResource(R.drawable.bg_pill_white);
+                    holder.songBg.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_selected));
+                }
+            }
+        }
     }
 
     @Override
@@ -121,6 +160,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         TextView albumTitle, albumArtist,songTitle, songArtist;
         ImageView albumCover;
         ImageView isLikeSong;
+        ConstraintLayout albumBg;
+        ConstraintLayout songBg;
         private Song boundSong;
 
         public void bindSong(Song song) {
@@ -140,6 +181,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
             songTitle = itemView.findViewById(R.id.song_name_search);
             songArtist = itemView.findViewById(R.id.song_artist_search);
             isLikeSong = itemView.findViewById(R.id.like_icon_search);
+            albumBg = itemView.findViewById(R.id.bg_album_search);
+            songBg = itemView.findViewById(R.id.bg_song_search);
         }
     }
 }

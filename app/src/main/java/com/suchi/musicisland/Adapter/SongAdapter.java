@@ -1,7 +1,5 @@
 package com.suchi.musicisland.Adapter;
 
-import static com.suchi.musicisland.Utils.Util.dpToPx;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -10,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -88,15 +85,20 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             return false;
         });
 
-        if (isFirst) {
-            holder.tvBgSong.setBackgroundResource(R.drawable.bg_pill_white_first);
-            holder.tvBgSong.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_song_selected_first));
-        } else if (isLast) {
-            holder.tvBgSong.setBackgroundResource(R.drawable.bg_pill_white_last);
-            holder.tvBgSong.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_song_selected_last));
+        if (getItemCount() == 1) {
+            holder.tvBgSong.setBackgroundResource(R.drawable.bg_pill_white_single);
+            holder.tvBgSong.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_selected_single));
         } else {
-            holder.tvBgSong.setBackgroundResource(R.drawable.bg_pill_white);
-            holder.tvBgSong.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_song_selected));
+            if (isFirst) {
+                holder.tvBgSong.setBackgroundResource(R.drawable.bg_pill_white_first);
+                holder.tvBgSong.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_selected_first));
+            } else if (isLast) {
+                holder.tvBgSong.setBackgroundResource(R.drawable.bg_pill_white_last);
+                holder.tvBgSong.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_selected_last));
+            } else {
+                holder.tvBgSong.setBackgroundResource(R.drawable.bg_pill_white);
+                holder.tvBgSong.setForeground(ContextCompat.getDrawable(context, R.drawable.bg_selected));
+            }
         }
     }
 

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bg_song_search"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:foreground="@drawable/bg_song_selected"
+    android:layout_height="65dp"
+    android:layout_marginTop="1dp"
+    android:background="@drawable/bg_pill_white"
+    android:foreground="@drawable/bg_selected"
     android:clickable="true"
     android:focusable="true"
     android:paddingStart="8dp"
@@ -12,11 +14,10 @@
 
     <ImageView
         android:id="@+id/like_icon_search"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
         android:layout_marginTop="18dp"
         app:layout_constraintEnd_toStartOf="@+id/song_name_search"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -59,7 +60,7 @@
         android:id="@+id/song_tag_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
+        android:layout_marginStart="16dp"
         android:gravity="center_vertical"
         android:ellipsize="end"
         android:maxLines="1"
@@ -70,13 +71,5 @@
         app:layout_constraintTop_toBottomOf="@+id/song_name_search">
 
     </TextView>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="#22000000"
-        app:layout_constraintTop_toBottomOf="@+id/song_artist_search"
-        tools:layout_editor_absoluteX="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

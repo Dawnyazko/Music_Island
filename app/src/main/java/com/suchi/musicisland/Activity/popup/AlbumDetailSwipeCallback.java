@@ -41,8 +41,6 @@ public class AlbumDetailSwipeCallback extends ItemTouchHelper.SimpleCallback {
     // 阻尼相关参数
     private static final float DAMP_THRESHOLD = 0.4f; // 开始阻尼
     private static final float MAX_SWIPE_RATIO = 1.0f; // 最大滑动距离比例
-    private float currentDx = 0;
-    private boolean isSwiping = false;
 
     // 回弹动画相关
     private DecelerateInterpolator decelerateInterpolator = new DecelerateInterpolator(2f);
@@ -142,6 +140,10 @@ public class AlbumDetailSwipeCallback extends ItemTouchHelper.SimpleCallback {
 
             return; //阻断 ItemTouchHelper
         }
+        //删除滑动时的阴影
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            viewHolder.itemView.setElevation(0);
+        }
 
         View itemView = viewHolder.itemView;
 
@@ -200,6 +202,11 @@ public class AlbumDetailSwipeCallback extends ItemTouchHelper.SimpleCallback {
             float dY,
             boolean isCurrentlyActive
     ) {
+        //删除滑动时的阴影
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            viewHolder.itemView.setElevation(0);
+        }
+        
         View itemView = viewHolder.itemView;
         float maxSwipe = itemView.getWidth() * MAX_SWIPE_RATIO;
         float threshold = itemView.getWidth() * DAMP_THRESHOLD;
@@ -255,7 +262,6 @@ public class AlbumDetailSwipeCallback extends ItemTouchHelper.SimpleCallback {
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
         // 重置状态
-        isSwiping = false;
         isAnimatingBack = false;
     }
 

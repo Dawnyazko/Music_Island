@@ -139,6 +139,11 @@ public class MixedListSwipeCallBack extends ItemTouchHelper.SimpleCallback {
             return; //必须 return，阻断 ItemTouchHelper
         }
 
+        //删除滑动时的阴影
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            viewHolder.itemView.setElevation(0);
+        }
+
         View itemView = viewHolder.itemView;
 
         if (isAnimatingBack && isCurrentlyActive) {
@@ -197,6 +202,12 @@ public class MixedListSwipeCallBack extends ItemTouchHelper.SimpleCallback {
             float dY,
             boolean isCurrentlyActive
     ) {
+
+        //删除滑动时的阴影
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            viewHolder.itemView.setElevation(0);
+        }
+
         View itemView = viewHolder.itemView;
 
         float maxSwipe = itemView.getWidth() * MAX_SWIPE_RATIO;
