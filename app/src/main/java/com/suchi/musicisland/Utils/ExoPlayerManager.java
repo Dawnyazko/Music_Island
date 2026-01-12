@@ -19,6 +19,7 @@ import com.suchi.musicisland.Album_Table;
 import com.suchi.musicisland.Listener.SongPlayChangeNotifier;
 import com.suchi.musicisland.Song;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.suchi.musicisland.Store.PreferenceStore;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -70,6 +71,8 @@ public class ExoPlayerManager {
         }
 
         exoPlayer = new ExoPlayer.Builder(appContext).build();
+        int lastMode = PreferenceStore.loadPlayMode(appContext);
+        exoPlayer.setRepeatMode(lastMode);
 
         // 设置播放完成监听
         exoPlayer.addListener(new Player.Listener() {
@@ -116,18 +119,26 @@ public class ExoPlayerManager {
     }
 
     public PlayMode switchPlayMode() {
+        int mode = 0;
+
         switch (playMode) {
             case SEQUENCE:
                 playMode = PlayMode.REPEAT_ALL;
-                exoPlayer.setRepeatMode(Player.REPEAT_MODE_ALL);
+                mode = Player.REPEAT_MODE_ALL;
+                exoPlayer.setRepeatMode(mode);
+                PreferenceStore.savePlayMode(appContext, mode);
                 break;
             case REPEAT_ALL:
                 playMode = PlayMode.REPEAT_ONE;
-                exoPlayer.setRepeatMode(REPEAT_MODE_ONE);
+                mode = REPEAT_MODE_ONE;
+                exoPlayer.setRepeatMode(mode);
+                PreferenceStore.savePlayMode(appContext, mode);
                 break;
             case REPEAT_ONE:
                 playMode = PlayMode.SHUFFLE;
-                exoPlayer.setRepeatMode(REPEAT_MODE_OFF);
+                mode = REPEAT_MODE_OFF;
+                exoPlayer.setRepeatMode(mode);
+                PreferenceStore.savePlayMode(appContext, mode);
                 if (!(getCurrentSong() == null)) {
                     List<Song> shuffleList = buildShuffleList(getAlbumList(), getCurrentSong(), true);
                     updateFutureQueue(shuffleList);
@@ -135,7 +146,8 @@ public class ExoPlayerManager {
                 break;
             case SHUFFLE:
                 playMode = PlayMode.SEQUENCE;
-                exoPlayer.setRepeatMode(REPEAT_MODE_OFF);
+                exoPlayer.setRepeatMode(mode);
+                PreferenceStore.savePlayMode(appContext, mode);
                 if (!(getCurrentSong() == null)) {
                     List<Song> sequenceList = buildSequenceList(getAlbumList(), getCurrentSong());
                     updateFutureQueue(sequenceList);

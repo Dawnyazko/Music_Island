@@ -42,7 +42,7 @@ import com.suchi.musicisland.Executor.AppExecutors;
 import com.suchi.musicisland.Listener.MainUIChangeNotifier;
 import com.suchi.musicisland.Service.MusicPlaybackService;
 import com.suchi.musicisland.Utils.ExoPlayerManager;
-import com.suchi.musicisland.Store.PreferenceManager;
+import com.suchi.musicisland.Store.PreferenceStore;
 import com.suchi.musicisland.MusicDBHelper;
 import com.suchi.musicisland.R;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -55,7 +55,7 @@ public class MainActivity extends BaseActivity {
 
     private ImageButton likeBottom;
     private ImageButton optionMenuBottom;
-    private PreferenceManager sortManager;
+    private PreferenceStore sortManager;
     private String currentSortMethod;
     private RecyclerView recyclerAlbums;
     private AlbumAdapter albumAdapter;
@@ -96,7 +96,7 @@ public class MainActivity extends BaseActivity {
 
         initializeViews();
 
-        sortManager = new PreferenceManager(this);
+        sortManager = new PreferenceStore(this);
         currentSortMethod = sortManager.getSortMethod();
 
         setupClickListeners();
@@ -285,8 +285,8 @@ public class MainActivity extends BaseActivity {
 
         layoutRecent.setOnClickListener(v -> {
             new Handler().postDelayed(()->{
-                currentSortMethod = PreferenceManager.SORT_RECENT;
-                sortManager.saveSortMethod(PreferenceManager.SORT_RECENT);
+                currentSortMethod = PreferenceStore.SORT_RECENT;
+                sortManager.saveSortMethod(PreferenceStore.SORT_RECENT);
                 updateCheckIcons(iconRecentCheck, iconAlphabeticalCheck);
                 Toast.makeText(this, "已选择：添加日期", Toast.LENGTH_SHORT).show();
                 popupWindow.dismiss();
@@ -296,8 +296,8 @@ public class MainActivity extends BaseActivity {
 
         layoutAlphabetical.setOnClickListener(v -> {
             new Handler().postDelayed(()->{
-                currentSortMethod = PreferenceManager.SORT_ALPHABETICAL;
-                sortManager.saveSortMethod(PreferenceManager.SORT_ALPHABETICAL);
+                currentSortMethod = PreferenceStore.SORT_ALPHABETICAL;
+                sortManager.saveSortMethod(PreferenceStore.SORT_ALPHABETICAL);
                 updateCheckIcons(iconRecentCheck, iconAlphabeticalCheck);
                 Toast.makeText(this, "已选择：字母顺序", Toast.LENGTH_SHORT).show();
                 popupWindow.dismiss();
@@ -318,10 +318,10 @@ public class MainActivity extends BaseActivity {
     }
 
     private void updateCheckIcons(ImageView recentCheck, ImageView alphabeticalCheck) {
-        if (currentSortMethod.equals(PreferenceManager.SORT_RECENT)) {
+        if (currentSortMethod.equals(PreferenceStore.SORT_RECENT)) {
             recentCheck.setVisibility(View.VISIBLE);
             alphabeticalCheck.setVisibility(View.GONE);
-        } else if (currentSortMethod.equals(PreferenceManager.SORT_ALPHABETICAL)) {
+        } else if (currentSortMethod.equals(PreferenceStore.SORT_ALPHABETICAL)) {
             recentCheck.setVisibility(View.GONE);
             alphabeticalCheck.setVisibility(View.VISIBLE);
         }
