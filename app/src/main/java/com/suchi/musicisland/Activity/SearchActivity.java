@@ -276,7 +276,7 @@ public class SearchActivity extends AppCompatActivity {
         );
 
         popupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
-        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.pill_bg));
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_pill_blue));
         popupWindow.setElevation(12f);
 
 

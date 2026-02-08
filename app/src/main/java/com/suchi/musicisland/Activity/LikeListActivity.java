@@ -21,8 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.suchi.musicisland.Adapter.FooterBlankAdapter;
 import com.suchi.musicisland.Adapter.HeaderAdapter;
-import com.suchi.musicisland.Adapter.SongAdapter;
+import com.suchi.musicisland.Adapter.SongAdapterAlbum;
+import com.suchi.musicisland.Adapter.SongAdapterList;
 import com.suchi.musicisland.Executor.AppExecutors;
+import com.suchi.musicisland.Listener.SongLikeChangeNotifier;
 import com.suchi.musicisland.Listener.SongPlayChangeNotifier;
 import com.suchi.musicisland.MusicDBHelper;
 import com.suchi.musicisland.Store.SongStateStore;
@@ -46,10 +48,13 @@ public class LikeListActivity extends BaseActivity {
     private RecyclerView recyclerSongs;
     private HeaderAdapter headerAdapter;
     private FooterBlankAdapter footerBlankAdapter;
-    private SongAdapter songAdapter;
+    private SongAdapterList songAdapterList;
     private ConcatAdapter concatAdapter;
 
     private boolean scrollAttached = false;
+
+    private final SongLikeChangeNotifier.OnSongLikeChangedListener likeListener =
+            (songId, isLike) -> loadSongsToUI();
 
     private void initializeView() {
         returnButton = findViewById(R.id.returnIcon);
@@ -71,6 +76,14 @@ public class LikeListActivity extends BaseActivity {
         setupOnClickListener();
         loadSongsToUI();
         attachScrollListenerWhenUserScrolls(recyclerSongs);
+
+        SongLikeChangeNotifier.getInstance().addListener(likeListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SongLikeChangeNotifier.getInstance().removeListener(likeListener);
     }
 
     private void setupOnClickListener() {
@@ -102,7 +115,7 @@ public class LikeListActivity extends BaseActivity {
         headerAdapter = new HeaderAdapter("已喜爱的歌曲",true);
         footerBlankAdapter = new FooterBlankAdapter();
 
-        songAdapter = new SongAdapter(this, songList, new SongAdapter.OnSongClickListener() {
+        songAdapterList = new SongAdapterList(this, songList, new SongAdapterList.OnSongClickListener() {
             @Override
             public void onSongClick(Song song) {
                 List<Song> albumSongs = SQLite.select()
@@ -122,7 +135,7 @@ public class LikeListActivity extends BaseActivity {
             }
         });
 
-        concatAdapter = new ConcatAdapter(headerAdapter,songAdapter,footerBlankAdapter);
+        concatAdapter = new ConcatAdapter(headerAdapter, songAdapterList,footerBlankAdapter);
         recyclerSongs.setAdapter(concatAdapter);
     }
 
@@ -148,7 +161,7 @@ public class LikeListActivity extends BaseActivity {
         );
 
         popupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
-        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.pill_bg));
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_pill_blue));
         popupWindow.setElevation(12f);
 
 
@@ -171,8 +184,8 @@ public class LikeListActivity extends BaseActivity {
         });
 
         //决定弹出位置
-        int x = SongAdapter.lastTouchX;
-        int y = SongAdapter.lastTouchY;
+        int x = SongAdapterList.lastTouchX;
+        int y = SongAdapterList.lastTouchY;
 
         // 计算 popup 显示方向
         boolean isRight = x < getResources().getDisplayMetrics().widthPixels / 2;
@@ -204,7 +217,7 @@ public class LikeListActivity extends BaseActivity {
                 }
             }
         }
-        songAdapter.notifyDataSetChanged();
+        songAdapterList.notifyDataSetChanged();
     }
 
     //检测是否滑动

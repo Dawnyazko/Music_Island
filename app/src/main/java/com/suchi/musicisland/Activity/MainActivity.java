@@ -251,7 +251,7 @@ public class MainActivity extends BaseActivity {
                 true
         );
 
-        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.pill_bg));
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_pill_blue));
         popupWindow.setElevation(12f);
 
         LinearLayout layoutImport = popupView.findViewById(R.id.layout_import);
@@ -362,7 +362,7 @@ public class MainActivity extends BaseActivity {
         );
 
         popupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
-        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.pill_bg));
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_pill_blue));
         popupWindow.setElevation(12f);
 
         //测量popupWindow 大小

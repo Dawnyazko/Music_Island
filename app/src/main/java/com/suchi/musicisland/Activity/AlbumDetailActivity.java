@@ -30,7 +30,7 @@ import com.suchi.musicisland.Adapter.FooterAdapter;
 
 import com.suchi.musicisland.Adapter.HeaderBlankAdapter;
 import com.suchi.musicisland.Adapter.ItemAdapter;
-import com.suchi.musicisland.Adapter.SongAdapter;
+import com.suchi.musicisland.Adapter.SongAdapterAlbum;
 import com.suchi.musicisland.Album;
 import com.suchi.musicisland.Album_Table;
 import com.suchi.musicisland.Executor.AppExecutors;
@@ -58,7 +58,7 @@ public class AlbumDetailActivity extends BaseActivity {
     private long albumId;
     private List<Song> songList;
     private List<Album> albumList;
-    private SongAdapter songAdapter;
+    private SongAdapterAlbum songAdapterAlbum;
     private AlbumDetailAdapter albumDetailAdapter;
     private ConcatAdapter concatAdapter;
     private HeaderBlankAdapter headerBlankAdapter;
@@ -170,7 +170,7 @@ public class AlbumDetailActivity extends BaseActivity {
 
         footerAdapter = new FooterAdapter(MusicDBHelper.getAlbumSongCount(albumId), MusicDBHelper.convertMsToMin(), album.getCopyRight());
 
-        songAdapter = new SongAdapter(this, songList, new SongAdapter.OnSongClickListener() {
+        songAdapterAlbum = new SongAdapterAlbum(this, songList, new SongAdapterAlbum.OnSongClickListener() {
             @Override
             public void onSongClick(Song song) {
                 List<Song> albumSongs = SQLite.select()
@@ -190,7 +190,6 @@ public class AlbumDetailActivity extends BaseActivity {
                 }
 
                 SongPlayChangeNotifier.getInstance().notifyUIChanged();
-                playButton.setImageResource(R.drawable.pause_icon);
             }
 
             @Override
@@ -200,10 +199,10 @@ public class AlbumDetailActivity extends BaseActivity {
         });
 
         //滑动歌曲
-        swipeCallback = new AlbumDetailSwipeCallback(this, songList, exoPlayManager, songAdapter);
+        swipeCallback = new AlbumDetailSwipeCallback(this, songList, exoPlayManager, songAdapterAlbum);
         touchHelper = new ItemTouchHelper(swipeCallback);
         touchHelper.attachToRecyclerView(recyclerSongs);
-        concatAdapter = new ConcatAdapter(headerBlankAdapter, albumDetailAdapter, itemAdapter, songAdapter, footerAdapter);
+        concatAdapter = new ConcatAdapter(headerBlankAdapter, albumDetailAdapter, itemAdapter, songAdapterAlbum, footerAdapter);
         recyclerSongs.setAdapter(concatAdapter);
     }
 
@@ -229,7 +228,7 @@ public class AlbumDetailActivity extends BaseActivity {
         );
 
         popupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
-        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.pill_bg));
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_pill_blue));
         popupWindow.setElevation(12f);
 
 
@@ -270,8 +269,8 @@ public class AlbumDetailActivity extends BaseActivity {
         });
 
         //决定弹出位置
-        int x = SongAdapter.lastTouchX;
-        int y = SongAdapter.lastTouchY;
+        int x = SongAdapterAlbum.lastTouchX;
+        int y = SongAdapterAlbum.lastTouchY;
 
         // 计算 popup 显示方向
         boolean isRight = x < getResources().getDisplayMetrics().widthPixels / 2;
@@ -303,14 +302,14 @@ public class AlbumDetailActivity extends BaseActivity {
                 }
             }
         }
-        songAdapter.notifyDataSetChanged();
+        songAdapterAlbum.notifyDataSetChanged();
     }
 
     private void refreshLikeStatus(long songId, boolean isLike) {
         for (int i = 0; i < songList.size(); i++) {
             if (songList.get(i).getId() == songId) {
                 songList.get(i).markAsLiked(isLike);
-                songAdapter.notifyItemChanged(i);
+                songAdapterAlbum.notifyItemChanged(i);
                 break;
             }
         }

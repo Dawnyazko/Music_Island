@@ -17,14 +17,12 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.suchi.musicisland.Adapter.SongAdapter;
+import com.suchi.musicisland.Adapter.SongAdapterAlbum;
 import com.suchi.musicisland.MusicDBHelper;
 import com.suchi.musicisland.R;
 import com.suchi.musicisland.Song;
-import com.suchi.musicisland.Song_Table;
 import com.suchi.musicisland.Utils.ExoPlayerManager;
 import com.suchi.musicisland.Utils.Util;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.List;
 
@@ -32,7 +30,7 @@ public class AlbumDetailSwipeCallback extends ItemTouchHelper.SimpleCallback {
 
     private final Context context;
     private final ExoPlayerManager exoPlayManger;
-    private SongAdapter songAdapter;
+    private SongAdapterAlbum songAdapterAlbum;
     private final Paint bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final RectF bgRect = new RectF();
     private final List<Song> songList;
@@ -57,13 +55,13 @@ public class AlbumDetailSwipeCallback extends ItemTouchHelper.SimpleCallback {
             Context context,
             List<Song> songList,
             ExoPlayerManager exoPlayManger,
-            SongAdapter songAdapter
+            SongAdapterAlbum songAdapterAlbum
     ) {
         super(0, ItemTouchHelper.RIGHT); // | ItemTouchHelper.LEFT
         this.context = context.getApplicationContext();
         this.songList = songList;
         this.exoPlayManger = exoPlayManger;
-        this.songAdapter = songAdapter;
+        this.songAdapterAlbum = songAdapterAlbum;
     }
 
     @Override
@@ -84,7 +82,7 @@ public class AlbumDetailSwipeCallback extends ItemTouchHelper.SimpleCallback {
         MusicDBHelper.deleteSingleSong(song);
 
         //从UI删除
-        songAdapter.removeAt(position);
+        songAdapterAlbum.removeAt(position);
     }
 
     @Override
@@ -110,7 +108,7 @@ public class AlbumDetailSwipeCallback extends ItemTouchHelper.SimpleCallback {
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         // 重写此方法以控制滑动行为
-        if (viewHolder instanceof SongAdapter.SongViewHolder) {
+        if (viewHolder instanceof SongAdapterAlbum.SongViewHolder) {
             return makeMovementFlags(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT);
         } else {
             return makeMovementFlags(0, 0); // 禁止滑动

@@ -382,6 +382,7 @@ public class ExoPlayerManager {
 
         if (!isModeChange) {
             exoPlayer.play();
+            isPlaying = true;
         }
     }
 

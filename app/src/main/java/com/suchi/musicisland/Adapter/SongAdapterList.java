@@ -8,9 +8,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.suchi.musicisland.Album;
+import com.suchi.musicisland.Album_Table;
 import com.suchi.musicisland.R;
 import com.suchi.musicisland.Song;
 
@@ -18,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder>{
+public class SongAdapterList extends RecyclerView.Adapter<SongAdapterList.SongViewHolder> {
     private List<Song> songList;
     private Context context;
     private OnSongClickListener listener;
@@ -28,21 +34,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     public interface OnSongClickListener {
         void onSongClick(Song song);
         void onSongLongPressed(Song song, View view);
-
     }
 
-    public SongAdapter (Context context, List<Song> songList, OnSongClickListener listener) {
+    public SongAdapterList(Context context, List<Song> songList, OnSongClickListener listener) {
         this.context = context;
         this.songList = songList;
         this.listener = listener;
-    }
-
-    @NotNull
-    @Override
-    public SongViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.item_song, parent, false);
-
-        return new SongViewHolder(v);
     }
 
     @Override
@@ -50,22 +47,37 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         return songList.size();
     }
 
+    @NonNull
     @Override
-    public void onBindViewHolder(@NotNull SongViewHolder holder, int position) {
+    public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(context).inflate(R.layout.item_song_list, parent, false);
+
+        return new SongViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SongViewHolder holder, int position) {
         Song song = songList.get(position);
+        Album album = SQLite.select()
+                .from(Album.class)
+                .where(Album_Table.id.eq(song.getAlbumId()))
+                .querySingle();
+
         boolean isLast = position == getItemCount() - 1;
         boolean isFirst = position == 0;
 
         holder.tvSongName.setText(song.getTitle());
         holder.tvArtist.setText(song.getSongArtist());
         holder.tvSongDuration.setText(formatDuration(song.getDurationMs()));
-        holder.tvSongTrackNum.setText(String.valueOf(song.getTrackNum()));
 
-        //为已喜爱的歌曲加上favorite,写else是为了防止recyclerView的复用机制，导致图标出现在别的歌上
-        if (song.getIsLiked() == true) {
-            holder.tvIsLikeSong.setImageResource(R.drawable.solid_favorite_icon);
+        assert album != null;
+        if (album.getCoverUri() == null) {
+            holder.tvSongCover.setImageResource(R.drawable.shape_album_bg);
         } else {
-            holder.tvIsLikeSong.setImageResource(R.drawable.blank);
+            Glide.with(context)
+                    .load(album.getCoverUri())
+                    .transform(new RoundedCorners(14))
+                    .into(holder.tvSongCover);
         }
 
         holder.itemView.setOnClickListener(v -> {
@@ -106,27 +118,18 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         TextView tvSongName;
         TextView tvArtist;
         TextView tvSongDuration;
-        ImageView tvIsLikeSong;
-        TextView tvSongTrackNum;
         View tvBgSong;
+        ImageView tvSongCover;
 
         public SongViewHolder(@NotNull View itemView) {
             super(itemView);
             tvSongName = itemView.findViewById(R.id.song_name);
             tvArtist = itemView.findViewById(R.id.song_artist);
             tvSongDuration = itemView.findViewById(R.id.song_duration);
-            tvIsLikeSong = itemView.findViewById(R.id.like_icon_song);
-            tvSongTrackNum = itemView.findViewById(R.id.song_trackNum);
             tvBgSong = itemView.findViewById(R.id.bg_song);
+            tvSongCover = itemView.findViewById(R.id.ImgCover_list);
         }
     }
-
-    public void removeAt(int position) {
-        songList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, getItemCount() - position);
-    }
-
 
     //把long格式的歌曲长度转换为分秒格式
     public static String formatDuration(long durationMs) {

@@ -8,7 +8,7 @@
         android:id="@+id/returnButton_album"
         android:layout_width="51dp"
         android:layout_height="51dp"
-        android:background="@drawable/circle_bg"
+        android:background="@drawable/bg_circle"
         android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

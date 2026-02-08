@@ -135,6 +135,7 @@ public class BaseActivity extends AppCompatActivity {
         });
 
         playButton.setOnClickListener(v -> {
+            SongPlayChangeNotifier.getInstance().notifyUIChanged();
             if (!exoPlayManager.isPlaying()) {
                 exoPlayManager.resume();
                 //播放动画

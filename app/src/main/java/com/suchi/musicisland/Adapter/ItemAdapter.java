@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.suchi.musicisland.Listener.SongPlayChangeNotifier;
@@ -14,10 +15,6 @@ import com.suchi.musicisland.Utils.ExoPlayerManager;
 import org.jetbrains.annotations.NotNull;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> implements SongPlayChangeNotifier.OnSongPlayerChangedListener{
-    @Override
-    public void onPlayerStateChanged() {
-        notifyItemChanged(0);
-    }
 
     public interface OnButtonClickListener {
         void onPlayBtnClick(View v);
@@ -26,9 +23,24 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> im
     }
 
     private OnButtonClickListener listener;
+    private boolean isRegistered = false;
 
     public ItemAdapter(OnButtonClickListener listener) {
         this.listener = listener;
+
+        if (!isRegistered) {
+            SongPlayChangeNotifier.getInstance().addListener(this);
+            isRegistered = true;
+        }
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        if (isRegistered) {
+            SongPlayChangeNotifier.getInstance().removeListener(this);
+            isRegistered = false;
+        }
     }
 
     @NotNull
@@ -39,11 +51,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> im
     }
 
     @Override
-    public void onBindViewHolder(@NotNull ViewHolder holder, int position) {
-        //更新按钮图标
-        boolean isPlaying = ExoPlayerManager.getInstance().isPlaying();
+    public void onPlayerStateChanged() {
+        notifyItemChanged(0);
+    }
 
-        holder.playButton.setImageResource(isPlaying ? R.drawable.pause_icon : R.drawable.play_arrow_icon);
+
+    @Override
+    public void onBindViewHolder(@NotNull ViewHolder holder, int position) {
+        updatePlayButtonIcon(holder);
 
         holder.playButton.setOnClickListener(v -> {
             holder.playButton.animate().scaleX(0.75f).scaleY(0.75f).setDuration(80)
@@ -77,6 +92,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> im
                     );
 
         });
+    }
+
+    private void updatePlayButtonIcon(ViewHolder holder) {
+        if (holder == null) return;
+
+        boolean isPlaying = ExoPlayerManager.getInstance().isPlaying();
+        holder.playButton.setImageResource(
+                isPlaying ? R.drawable.pause_icon : R.drawable.play_arrow_icon
+        );
     }
 
     @Override
